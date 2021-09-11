@@ -39,7 +39,7 @@ public class ValidateOTPServlet extends HttpServlet {
 		
 		HttpSession session = request.getSession(false);
 		
-		String mobileNumber = (String)session.getAttribute("mobilenumber");
+		//String mobileNumber = (String)session.getAttribute("mobilenumber");
 		String OTP = (String)session.getAttribute("otp");
 		String userOTP = request.getParameter("userOTP");
 		
@@ -51,7 +51,7 @@ public class ValidateOTPServlet extends HttpServlet {
 		else {
 			session.removeAttribute("mobileNumber");
 			session.removeAttribute("isValid");
-			session.setAttribute("message", "incorect otp try again later");
+			session.setAttribute("message", "incorect otp try again later *");
 			String indexPage = "./index.jsp";
 	    	response.sendRedirect(indexPage);
 		}

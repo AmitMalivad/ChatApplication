@@ -42,8 +42,8 @@ public class SendOTPServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession(); //session create
 		
-		String mobileNumber = request.getParameter("mobileNumber"); //get mobilenumber for usre
-		String otp = HelperClass.generateOTP();	//get otp for generate Class
+		String mobileNumber = request.getParameter("mobileNumber"); //get mobileNumber 
+		String otp = HelperClass.generateOTP();	//get OTP for generate Class
 		System.out.println("OTP is :" + otp);
 		
 		session.setAttribute("mobileNumber",mobileNumber);
