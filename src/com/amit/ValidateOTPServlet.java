@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.sql.*;
 
 /**
  * Servlet implementation class ProcessOTPServlet
@@ -39,14 +40,40 @@ public class ValidateOTPServlet extends HttpServlet {
 		
 		HttpSession session = request.getSession(false);
 		
-		//String mobileNumber = (String)session.getAttribute("mobilenumber");
+		String mobileNumber = (String)session.getAttribute("mobileNumber");
 		String OTP = (String)session.getAttribute("otp");
 		String userOTP = request.getParameter("userOTP");
 		
 		if(userOTP.equals(OTP)) {
 			session.setAttribute("isValid", "true");
-			String homePageUrl = "./home.jsp";
-			response.sendRedirect(homePageUrl);
+			
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/chatapplication","root","1234");
+				PreparedStatement pst = con.prepareStatement("select * from user where mobilenumber=?");
+				pst.setString(1,mobileNumber);
+				ResultSet rs = pst.executeQuery();		 
+				
+				if(!rs.isBeforeFirst()) {
+					String profilePageUrl = "./profile.jsp";
+					response.sendRedirect(profilePageUrl);
+					System.out.println("InValid Mobile Number");
+				}
+				
+				rs.next();
+				if( mobileNumber.equals(rs.getString(2))) {
+					System.out.println(rs.getString(1));
+					session.setAttribute("name",rs.getString(1));
+					String homePageUrl = "./home.jsp";
+					response.sendRedirect(homePageUrl);
+					System.out.println("Valid Mobile Number");
+				}
+
+			}
+			catch(Exception e) {
+				System.out.println("ERROR :" +e);
+			}
+			
 		}
 		else {
 			session.removeAttribute("mobileNumber");

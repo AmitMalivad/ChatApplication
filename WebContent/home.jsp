@@ -14,5 +14,9 @@
 </head>
 <body>
 <h2>WelCome to my ChatApplication</h2>
+<%
+String name = (String)session.getAttribute("name");
+out.println(name);
+%>
 </body>
 </html>
