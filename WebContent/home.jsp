@@ -21,7 +21,8 @@ out.println(name);
 
 <img alt="" src="<%
 String profilePic = (String)session.getAttribute("profilePic");
-out.print(profilePic);
-%>">
+out.print(profilePic);%>">
+<input type="button" value="ProfileUpdate" onclick="window.location='profile.jsp'"/>
+
 </body>
 </html>

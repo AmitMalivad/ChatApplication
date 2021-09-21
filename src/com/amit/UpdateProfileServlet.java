@@ -65,13 +65,27 @@ public class UpdateProfileServlet extends HttpServlet {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/chat_application","root","root");
-			PreparedStatement pst = con.prepareStatement("insert into user values(?,?, ?)");
-			pst.setString(1, userName);
-			pst.setString(2, mobileNumber);
-			pst.setString(3, fileName);
-			pst.executeUpdate();		 
-			System.out.println("userName ADD Success fully..");
+			PreparedStatement pst = con.prepareStatement("select * from user where mobile=?");
+			pst.setString(1,mobileNumber);
+			ResultSet rs = pst.executeQuery();		 
 			
+			if(!rs.isBeforeFirst()) {
+				PreparedStatement pste = con.prepareStatement("insert into user values(?,?,?)");
+				pste.setString(1, userName);
+				pste.setString(2, mobileNumber);
+				pste.setString(3, fileName);
+				pste.executeUpdate();		 
+				System.out.println("userName ADD Success fully..");
+			}else {
+				rs.next();
+				PreparedStatement pste = con.prepareStatement("update user set name=?, mobile=?, profile_pic=? where mobile=?");
+				pste.setString(1, userName);
+				pste.setString(2, mobileNumber);
+				pste.setString(3, fileName);
+				pste.setString(4, mobileNumber);
+				pste.executeUpdate();		 
+				System.out.println("user update ADD Success fully..");
+			}
 			session.setAttribute("name",userName);
 			session.setAttribute("profilePic", HelperClass.getBaseUrl(request)+"\\"+fileName);
 			String homePageUrl = "./home.jsp";
@@ -81,5 +95,7 @@ public class UpdateProfileServlet extends HttpServlet {
 			System.out.println("ERROR :" + e);
 		}
 	}
-
+		
 }
+
+

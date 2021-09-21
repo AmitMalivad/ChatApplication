@@ -42,7 +42,6 @@ public class ValidateOTPServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		HttpSession session = request.getSession(false);
-		
 		String mobileNumber = (String)session.getAttribute("mobileNumber");
 		String OTP = (String)session.getAttribute("otp");
 		String userOTP = request.getParameter("userOTP");
@@ -59,6 +58,7 @@ public class ValidateOTPServlet extends HttpServlet {
 				
 				if(!rs.isBeforeFirst()) {
 					String profilePageUrl = "./profile.jsp";
+		
 					response.sendRedirect(profilePageUrl);
 					System.out.println("InValid Mobile Number");
 				}else {
