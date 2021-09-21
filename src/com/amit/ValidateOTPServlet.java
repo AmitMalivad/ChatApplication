@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import com.amit.util.HelperClass;
+
 import java.sql.*;
 
 /**
@@ -64,6 +67,7 @@ public class ValidateOTPServlet extends HttpServlet {
 				if( mobileNumber.equals(rs.getString(2))) {
 					System.out.println(rs.getString(1));
 					session.setAttribute("name",rs.getString(1));
+					session.setAttribute("profilePic", HelperClass.getBaseUrl(request) +"\\"+ rs.getString(3));
 					String homePageUrl = "./home.jsp";
 					response.sendRedirect(homePageUrl);
 					System.out.println("Valid Mobile Number");

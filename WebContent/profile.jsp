@@ -7,8 +7,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form action="UpdateProfileServlet" method="post">
+<form action="UpdateProfileServlet" method="post" enctype="multipart/form-data">
 	<input type="text" name="userName" >
+	 <input type="file" name="profilePic" />
 	<input type="submit" value="SAVE">
 </form>
 </body>

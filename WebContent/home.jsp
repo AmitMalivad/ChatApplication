@@ -18,5 +18,10 @@
 String name = (String)session.getAttribute("name");
 out.println(name);
 %>
+
+<img alt="" src="<%
+String profilePic = (String)session.getAttribute("profilePic");
+out.print(profilePic);
+%>">
 </body>
 </html>
