@@ -49,8 +49,8 @@ public class ValidateOTPServlet extends HttpServlet {
 			
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
-				Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/chatapplication","root","1234");
-				PreparedStatement pst = con.prepareStatement("select * from user where mobilenumber=?");
+				Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/chat_application","root","root");
+				PreparedStatement pst = con.prepareStatement("select * from user where mobile=?");
 				pst.setString(1,mobileNumber);
 				ResultSet rs = pst.executeQuery();		 
 				

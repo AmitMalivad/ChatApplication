@@ -46,7 +46,7 @@ public class UpdateProfileServlet extends HttpServlet {
 		String userName = request.getParameter("userName");
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/chatapplication","root","1234");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/chat_application","root","root");
 			PreparedStatement pst = con.prepareStatement("insert into user values(?,?)");
 			pst.setString(1, userName);
 			pst.setString(2, mobileNumber);
