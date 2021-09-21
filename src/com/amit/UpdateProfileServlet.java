@@ -54,10 +54,14 @@ public class UpdateProfileServlet extends HttpServlet {
 		String mobileNumber = (String)session.getAttribute("mobileNumber");
 		String userName = request.getParameter("userName");
 		Part profilePic = request.getPart("profilePic");
-		
-		String fileName = profilePic.getSubmittedFileName();
-		String folderPath= request.getServletContext().getRealPath("/");
-		profilePic.write(folderPath + "\\" +  fileName);	
+		String fileName;
+		if(profilePic.getSize() == 0) {
+			fileName ="images\\default.jpg";
+		}else {
+			fileName = "images\\" + profilePic.getSubmittedFileName();
+			String folderPath= request.getServletContext().getRealPath("/");
+			profilePic.write(folderPath + "\\" +  fileName);
+		}
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/chat_application","root","root");

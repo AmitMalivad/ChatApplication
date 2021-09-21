@@ -61,18 +61,17 @@ public class ValidateOTPServlet extends HttpServlet {
 					String profilePageUrl = "./profile.jsp";
 					response.sendRedirect(profilePageUrl);
 					System.out.println("InValid Mobile Number");
+				}else {
+					rs.next();
+					if( mobileNumber.equals(rs.getString(2))) {
+						System.out.println(rs.getString(1));
+						session.setAttribute("name",rs.getString(1));
+						session.setAttribute("profilePic", HelperClass.getBaseUrl(request) +"\\"+ rs.getString(3));
+						String homePageUrl = "./home.jsp";
+						response.sendRedirect(homePageUrl);
+						System.out.println("Valid Mobile Number");
+					}
 				}
-				
-				rs.next();
-				if( mobileNumber.equals(rs.getString(2))) {
-					System.out.println(rs.getString(1));
-					session.setAttribute("name",rs.getString(1));
-					session.setAttribute("profilePic", HelperClass.getBaseUrl(request) +"\\"+ rs.getString(3));
-					String homePageUrl = "./home.jsp";
-					response.sendRedirect(homePageUrl);
-					System.out.println("Valid Mobile Number");
-				}
-
 			}
 			catch(Exception e) {
 				System.out.println("ERROR :" +e);

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    
+<%@ page import="com.amit.util.HelperClass"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +11,9 @@
 <body>
 <form action="UpdateProfileServlet" method="post" enctype="multipart/form-data">
 	<input type="text" name="userName" >
-	 <input type="file" name="profilePic" />
+	<%	String defaultImage = HelperClass.getBaseUrl(request)+"\\images\\default.jpg";	%>
+	<img alt="" src="<% out.print(defaultImage); %>"> 
+	<input type="file" name="profilePic" />
 	<input type="submit" value="SAVE">
 </form>
 </body>
