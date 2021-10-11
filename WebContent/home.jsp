@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+ <%@ page import="com.amit.dto.*" %>	
+ <%@ page import="java.util.List" %>	
     <%
     if(session == null || session.getAttribute("isValid") == null || session.getAttribute("isValid") != "true") {
     	String indexPage = "./index.jsp";
     	response.sendRedirect(indexPage);
     }
+    List<Friend> friendList = (List<Friend>)session.getAttribute("friendList");
     %>
 <!DOCTYPE html>
 <html>
@@ -35,11 +38,22 @@
 		<button class="" onclick="window.location='profile.jsp'"><i class="icon fa fa-user"> Profile</i></button>
 		<!-- <input type="button" value="ProfileUpdate" onclick="window.location='profile.jsp'"/> -->
 		<button><i class="icon fa fa-envelope-open"> Message</i></button>
-		<button><i class="icon fa fa-address-book"></i> Friend</button>
+		<button onclick="window.location='addfriend.jsp'"><i class="icon fa fa-address-book"></i> Friend</button>
 	</div>
 </div>
-<div class="bg-blue-300 h-20">
-	<h2 class="font-serif pt-3">WelCome to my ChatApplication</h2>		
+
+<div class="bg-blue-200 h-screen w-auto sm:w-auto md:w-1/2 lg:w-1/3">
+	 <% if(friendList != null){ 
+	 	for(int i = 0; i < friendList.size(); i++) { %>
+	 <div class="divide-y divide-green-500">
+		<!-- <td><% out.println(friendList.get(i).getName());  out.println(friendList.get(i).getImg()); %></td> -->
+		<img alt="" src="<%out.println(friendList.get(i).getImg()); %>" class="bg-left-top h-20 w-20 p-2 rounded-full float-left">
+		<div class="grid grid-cols-1">
+			<label class="font-serif text-2xl ml-2 mt-6 sm:ml-5 "><%out.println(friendList.get(i).getName()); %></label>
+			<label class="font-serif text-md ml-2  sm:ml-5 ">Online</label>
+		</div>
+	</div> <% }} %>
 </div>
+
 </body>
 </html>

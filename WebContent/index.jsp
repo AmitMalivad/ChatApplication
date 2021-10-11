@@ -15,9 +15,9 @@
     	<pre class="tracking-wide text-gray-600 text-sm font-sans leading-5 text-center">We will send you an <b>One Time Password</b><br>on this mobile number</pre><br>
     	<%
     		session = request.getSession(false);
-    		if(session.getAttribute("message") != null) {
-        		String message=(String)session.getAttribute("message");
-        		out.print(message);	
+    		if(session.getAttribute("otpMessage") != null) {
+        		String otpMessage = (String)session.getAttribute("otpMessage");
+        		out.print(otpMessage);	
     			}
     	%><br>
     	<label class="text-gray-600 tracking-wider whitespace-normal text-sm">Enter Mobile Number</label><br>
