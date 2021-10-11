@@ -54,8 +54,10 @@ public class UpdateProfileServlet extends HttpServlet {
 		String mobileNumber = (String)session.getAttribute("mobileNumber");
 		String userName = request.getParameter("userName");
 		Part profilePic = request.getPart("profilePic");
+		boolean isUpdatePic = true;
 		String fileName;
 		if(profilePic.getSize() == 0) {
+			isUpdatePic = false;
 			fileName ="images\\default.jpg";
 		}else {
 			fileName = "images\\" + profilePic.getSubmittedFileName();
@@ -70,7 +72,7 @@ public class UpdateProfileServlet extends HttpServlet {
 			ResultSet rs = pst.executeQuery();		 
 			
 			if(!rs.isBeforeFirst()) {
-				PreparedStatement pste = con.prepareStatement("insert into user values(?,?,?)");
+				PreparedStatement pste = con.prepareStatement("insert into user(name, mobile, profile_pic) values(?,?,?)");
 				pste.setString(1, userName);
 				pste.setString(2, mobileNumber);
 				pste.setString(3, fileName);
@@ -81,13 +83,17 @@ public class UpdateProfileServlet extends HttpServlet {
 				PreparedStatement pste = con.prepareStatement("update user set name=?, mobile=?, profile_pic=? where mobile=?");
 				pste.setString(1, userName);
 				pste.setString(2, mobileNumber);
+				if(!isUpdatePic) {
+					pste.setString(3, rs.getString(4));
+					fileName = rs.getString(4);
+				}
 				pste.setString(3, fileName);
 				pste.setString(4, mobileNumber);
 				pste.executeUpdate();		 
 				System.out.println("user update ADD Success fully..");
 			}
 			session.setAttribute("name",userName);
-			session.setAttribute("profilePic", HelperClass.getBaseUrl(request)+"\\"+fileName);
+			session.setAttribute("profilePic", HelperClass.getBaseUrl(request)+"\\"+fileName);				
 			String homePageUrl = "./home.jsp";
 			response.sendRedirect(homePageUrl);
 		}
