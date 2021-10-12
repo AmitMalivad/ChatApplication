@@ -48,7 +48,7 @@ public class ValidateOTPServlet extends HttpServlet {
 		String mobileNumber = (String)session.getAttribute("mobileNumber");
 		String OTP = (String)session.getAttribute("otp");
 		String userOTP = request.getParameter("userOTP");
-		List<Friend> friendList = new ArrayList<Friend>();
+	
 		
 		if(userOTP.equals(OTP)) {
 			session.setAttribute("isValid", "true");
@@ -68,35 +68,10 @@ public class ValidateOTPServlet extends HttpServlet {
 					rs.next();
 					if( mobileNumber.equals(rs.getString(3))) {
 						
-						
-						Class.forName("com.mysql.jdbc.Driver");
-						Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/chat_application","root","root");
-						PreparedStatement prst = conn.prepareStatement("select * from friend where user_id = ? ");
-						prst.setInt(1, rs.getInt(1));
-						ResultSet rst = prst.executeQuery();
-						
-						while(rst.next()) {
-							
-							PreparedStatement prstatement = conn.prepareStatement("select * from user where id = ? ");
-							prstatement.setInt(1, rst.getInt("friend_id"));
-							ResultSet rstatement = prstatement.executeQuery();
-							rstatement.next();
-							
-							
-							Friend friend = new Friend();
-							friend.setId(rst.getInt("friend_id"));
-							friend.setName(rstatement.getString("name"));
-							friend.setImg(rstatement.getString("profile_pic"));
-							friendList.add(friend);
-				
-						}
-						
 						System.out.println(rs.getString(2));
 						session.setAttribute("id",rs.getInt(1));
 						session.setAttribute("name",rs.getString(2));
 						session.setAttribute("profilePic", HelperClass.getBaseUrl(request) +"\\"+ rs.getString(4));
-						
-						session.setAttribute("friendList",friendList);
 						String homePageUrl = "./home.jsp";
 						response.sendRedirect(homePageUrl);
 						System.out.println("Valid Mobile Number");

@@ -1,10 +1,19 @@
 package com.amit.dto;
 
+import java.util.List;
+
 public class Friend {
 	int id;
 	String name;
 	String img;
+	List<Message> chat;
 	
+	public List<Message> getChat() {
+		return chat;
+	}
+	public void setChat(List<Message> chat) {
+		this.chat = chat;
+	}
 	public int getId() {
 		return id;
 	}

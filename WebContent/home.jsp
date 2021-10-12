@@ -2,12 +2,15 @@
     pageEncoding="ISO-8859-1"%>
  <%@ page import="com.amit.dto.*" %>	
  <%@ page import="java.util.List" %>	
+  <%@ page import="com.amit.util.*" %>
+ 
     <%
     if(session == null || session.getAttribute("isValid") == null || session.getAttribute("isValid") != "true") {
     	String indexPage = "./index.jsp";
     	response.sendRedirect(indexPage);
     }
-    List<Friend> friendList = (List<Friend>)session.getAttribute("friendList");
+    List<Friend> friendList = HelperClass.getFriends((int) session.getAttribute("id"));
+    int activeFriendId = session.getAttribute("activeChat") != null ?  Integer.parseInt(session.getAttribute("activeChat").toString()) : 0;
     %>
 <!DOCTYPE html>
 <html>
@@ -17,6 +20,20 @@
 <title>Insert title here</title>
 <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+.messageBox{
+display:none;
+}
+
+.active{
+display:block;
+}
+
+.floatRight{
+float:right
+}
+</style>
 </head>
 <body>
 <div class="bg-green-600 h-52 sm:h-42 md:h-32 lg:h-24">
@@ -42,18 +59,55 @@
 	</div>
 </div>
 
-<div class="bg-blue-200 h-screen w-auto sm:w-auto md:w-1/2 lg:w-1/3">
+<div class="bg-blue-200 h-screen w-auto sm:w-auto md:w-1/2 lg:w-1/4 flex flex-col divide-y divide-green-500 float-left overflow-y-auto">
 	 <% if(friendList != null){ 
 	 	for(int i = 0; i < friendList.size(); i++) { %>
-	 <div class="divide-y divide-green-500">
+	<button id="friends" onclick="openMessageBox(event, '<%out.print(friendList.get(i).getId()); %>')" class=" hover:bg-red-100 hover:shadow-lg">
 		<!-- <td><% out.println(friendList.get(i).getName());  out.println(friendList.get(i).getImg()); %></td> -->
-		<img alt="" src="<%out.println(friendList.get(i).getImg()); %>" class="bg-left-top h-20 w-20 p-2 rounded-full float-left">
-		<div class="grid grid-cols-1">
-			<label class="font-serif text-2xl ml-2 mt-6 sm:ml-5 "><%out.println(friendList.get(i).getName()); %></label>
-			<label class="font-serif text-md ml-2  sm:ml-5 ">Online</label>
+		<img alt="" src="<%out.println(friendList.get(i).getImg()); %>" class="float-left ml-3 h-16 w-16 p-2 rounded-full ">
+		<div class="grid float-left mt-2 ml-5 text-left">
+			<label class="font-serif text-2xl  "><%out.println(friendList.get(i).getName()); %></label>
+			<label class="font-serif text-md  ">Online</label>
 		</div>
-	</div> <% }} %>
-</div>
+	</button>
+<% }} %>
+</div>	
 
+ <% if(friendList != null){ 
+	 	for(int i = 0; i < friendList.size(); i++) { %>
+	 	
+	<div id="<% out.print(friendList.get(i).getId()); %>" class="messageBox<% if(activeFriendId == friendList.get(i).getId()) {out.print(" active"); }%>">
+		<h3><%out.println(friendList.get(i).getId()); %></h3>
+ 	 	<h3><%out.println(friendList.get(i).getName()); %></h3>
+ 	  <% 
+ 	  
+ 	  for(int j = 0; j < friendList.get(i).getChat().size(); j++) { %>
+ 	 		 	
+ 	 		 	<h1 class="<% if(friendList.get(i).getChat().get(j).isSended()) {out.print("floatRight"); }  %>"><% out.println(friendList.get(i).getChat().get(j).getMessage());%></h1><br>
+ 	 		 	
+ 	 		 	<% } %>
+ 	 	
+ 		<form action="MessageServlet" method="post">
+ 	 	<input type="hidden" name="friendId" value="<% out.print(friendList.get(i).getId()); %>" />
+  		<input type="text" name="message" />
+  		<input type="submit" value="Send"></form>
+	</div>	
+<% }} %>
+
+<script>
+function openMessageBox(evt,friendName) {
+	 var i, tabcontent, tablinks;
+	  tabcontent = document.getElementsByClassName("messageBox");
+	  for (i = 0; i < tabcontent.length; i++) {
+	    tabcontent[i].style.display = "none";
+	  }
+	  tablinks = document.getElementsByClassName("friends");
+	  for (i = 0; i < tablinks.length; i++) {
+	    tablinks[i].className = tablinks[i].className.replace(" active", "");
+	  }
+	  document.getElementById(friendName).style.display = "block";
+	  evt.currentTarget.className += " active";
+}
+</script>
 </body>
 </html>
