@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.time.LocalDate;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,16 +17,16 @@ import javax.servlet.http.HttpSession;
 import com.amit.config.Constants;
 
 /**
- * Servlet implementation class MessageServlet
+ * Servlet implementation class DeleteAccountServlet
  */
-@WebServlet("/MessageServlet")
-public class MessageServlet extends HttpServlet {
+@WebServlet("/DeleteAccountServlet")
+public class DeleteAccountServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MessageServlet() {
+    public DeleteAccountServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -43,32 +44,22 @@ public class MessageServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
 		HttpSession session = request.getSession(false);
-		String friendId = request.getParameter("friendId");
 		int userId = (int) session.getAttribute("id");
-		String message = request.getParameter("message"); 
-		
-		System.out.println("FriendID :" + friendId);
-		System.out.println("userId :" + userId);
-		System.out.println("message :" + message);
-		
 		try {
 			Class.forName(Constants.JDBC_DRIVER);
 			Connection con = DriverManager.getConnection(Constants.JDBC_CONNECTION_STRING, Constants.JDBC_DATABASE_USERNAME,  Constants.JDBC_DATABASE_USERNAME);
-			PreparedStatement pst = con.prepareStatement("insert into message(user_id,friend_id,message,date_time) values(?,?,?,?)");
-			pst.setInt(1, userId);
-			pst.setString(2, friendId);
-			pst.setString(3, message);
-			pst.setDate(4, java.sql.Date.valueOf(LocalDate.now()));
-			pst.executeUpdate();
-			System.out.println("Message Send Success Fully...");
-			session.setAttribute("activeChat", friendId);
-			String homePageUrl = "./home.jsp";
-			response.sendRedirect(homePageUrl);
+			PreparedStatement st = con.prepareStatement("DELETE FROM user WHERE id = ?");
+	        st.setInt(1,userId);
+	        st.executeUpdate(); 
+			session.setAttribute("otpMessage", "Your Account Delete*");
+			String indexPageUrl = "./index.jsp";
+			response.sendRedirect(indexPageUrl);
 		}
-		catch (Exception e) {
-			System.out.println("ERROR :" + e);
+		catch(Exception e) {
+			System.out.println("ERROR :" + e);		
 		}
-	}
+ 	}
 
 }

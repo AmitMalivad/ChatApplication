@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
+import com.amit.config.Constants;
 import com.amit.util.HelperClass;
 
 /**
@@ -65,8 +66,8 @@ public class UpdateProfileServlet extends HttpServlet {
 			profilePic.write(folderPath + "\\" +  fileName);
 		}
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/chat_application","root","root");
+			Class.forName(Constants.JDBC_DRIVER);
+			Connection con = DriverManager.getConnection(Constants.JDBC_CONNECTION_STRING, Constants.JDBC_DATABASE_USERNAME,  Constants.JDBC_DATABASE_USERNAME);
 			PreparedStatement pst = con.prepareStatement("select * from user where mobile=?");
 			pst.setString(1,mobileNumber);
 			ResultSet rs = pst.executeQuery();		 

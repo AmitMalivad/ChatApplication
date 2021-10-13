@@ -7,20 +7,21 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Profile page</title>
 <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="grid place-items-center h-screen bg-gray-200">
-<%
+<%	
 	String name = session.getAttribute("name") != null ? (String)session.getAttribute("name") : "";
 	String profilePic = session.getAttribute("profilePic") != null ? (String)session.getAttribute("profilePic") : "";
 	String defaultImage = HelperClass.getBaseUrl(request)+"\\images\\default.jpg";
 	String img = profilePic.isBlank() ? defaultImage : profilePic;
 %>
-	<form action="UpdateProfileServlet" method="post" enctype="multipart/form-data" class="grid grid-cols-1 bg-white  divide-y divide-green-500 p-12 rounded-3xl">
+<div class="grid grid-cols-1 bg-white  p-12 rounded-3xl">
+	<form action="UpdateProfileServlet" method="post" enctype="multipart/form-data" class="divide-y divide-green-500">
 		<div>
-			<h1 class="text-center text-4xl tracking-wide from-current">Profile Update</h1><br>
+			<h1 class="text-center text-4xl tracking-wide from-current">Profile</h1><br>
 			<label class="text-gray-600 tracking-wider whitespace-normal text-sm">User Name :</label>
 			<input type="text" name="userName" value="<%out.println(name); %>" class="border-yellow-600 border-1 w-52 hover:border-green-600 border-b-2" /><br><br>
 		</div>
@@ -30,9 +31,19 @@
 			<input type="file" name="profilePic" /><br><br>
 		</div>
 		<div>
-			<br><input type="submit" value="SAVE" class="bg-purple-600 container p-1 rounded-3xl hover:bg-purple-800 text-white font-bold font-serif font-normal">
+			<br>
+			<div>
+				<input type="submit" value="SAVE" class="bg-purple-600  w-36 p-1 rounded-3xl hover:bg-purple-800 text-white font-bold font-serif font-normal ">
+				<input type="button" value="CANCLE" onclick="window.location='home.jsp'" class="bg-purple-600  w-36 p-1 rounded-3xl hover:bg-purple-800 text-white font-bold font-serif font-normal float-right"/>
+			</div>
+			<br>
+			</form>
+			<form action="DeleteAccountServlet" method="post">
+				<input type="submit" value="DELETE ACCOUNT" class="bg-red-600 container p-1 rounded-3xl hover:bg-red-800 text-white font-bold font-serif font-normal">
+			</form>
 		</div>
-	</form>
+	
+	</div>
 </div>
 </body>
 </html>

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.amit.config.Constants;
 import com.amit.dto.Friend;
 import com.amit.dto.Message;
 
@@ -46,8 +47,8 @@ public class ChatServlet extends HttpServlet {
 		List<Message>  chat = new ArrayList<>();
 		
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/chat_application","root","root");
+			Class.forName(Constants.JDBC_DRIVER);
+			Connection conn = DriverManager.getConnection(Constants.JDBC_CONNECTION_STRING, Constants.JDBC_DATABASE_USERNAME,  Constants.JDBC_DATABASE_USERNAME);
 			PreparedStatement prst = conn.prepareStatement("select * from message where user_id = ? and friend_id = ?");
 			prst.setInt(1, Integer.valueOf(currentUserId));
 			prst.setInt(2, Integer.valueOf(friendId));

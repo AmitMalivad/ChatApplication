@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.amit.config.Constants;
+
 
 
 /**
@@ -49,14 +51,14 @@ public class AddFriendServlet extends HttpServlet {
 		int userId = (int) session.getAttribute("id");
 		System.out.println("mob : " + mobileNumber);
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/chat_application","root","root");
+			Class.forName(Constants.JDBC_DRIVER);
+			Connection con = DriverManager.getConnection(Constants.JDBC_CONNECTION_STRING, Constants.JDBC_DATABASE_USERNAME,  Constants.JDBC_DATABASE_USERNAME);
 			PreparedStatement pst = con.prepareStatement("select * from user where mobile = ? ");
 			pst.setString(1, mobileNumber);
 			ResultSet rs = pst.executeQuery();	
 			
 			if(!rs.isBeforeFirst()) {
-				session.setAttribute("mobileMessage", "Not Available Friends.. *");
+				session.setAttribute("mobileMessage", "Not Available Friends*");
 				String addfriendPageUrl = "./addfriend.jsp";
 				response.sendRedirect(addfriendPageUrl);
 			} else {
@@ -81,7 +83,7 @@ public class AddFriendServlet extends HttpServlet {
 					response.sendRedirect(homePageUrl);
 					System.out.println("Friends ADD Success fully..");
 				}else {
-					session.setAttribute("mobileMessage", "Friend All ready added.. *");
+					session.setAttribute("mobileMessage", "Friend All ready added*");
 					String addfriendPageUrl = "./addfriend.jsp";
 					response.sendRedirect(addfriendPageUrl);
 				}

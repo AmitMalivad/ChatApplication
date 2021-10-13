@@ -10,13 +10,15 @@ import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.amit.config.Constants;
 import com.amit.dto.Friend;
 import com.amit.dto.Message;
 
 public class HelperClass {
 	public static String generateOTP() {
 		Random r = new Random();
-	    String otp = String.format("%04d", r.nextInt(1001));
+//	    String otp = String.format("%04d", r.nextInt(1001));
+		String otp = "2134";
 	    return otp;
 	}
 	
@@ -30,8 +32,8 @@ public class HelperClass {
 	public static List<Friend> getFriends(int userId){
 		List<Friend> friendList = new ArrayList<Friend>();
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/chat_application","root","root");
+			Class.forName(Constants.JDBC_DRIVER);
+			Connection conn = DriverManager.getConnection(Constants.JDBC_CONNECTION_STRING, Constants.JDBC_DATABASE_USERNAME,  Constants.JDBC_DATABASE_USERNAME);
 			PreparedStatement prst = conn.prepareStatement("select * from friend where user_id = ? ");
 			prst.setInt(1, userId);
 			ResultSet rst = prst.executeQuery();
@@ -63,8 +65,8 @@ public class HelperClass {
 		List<Message>  chat = new ArrayList<>();
 		
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/chat_application","root","root");
+			Class.forName(Constants.JDBC_DRIVER);
+			Connection conn = DriverManager.getConnection(Constants.JDBC_CONNECTION_STRING, Constants.JDBC_DATABASE_USERNAME,  Constants.JDBC_DATABASE_USERNAME);
 			PreparedStatement prst = conn.prepareStatement("select * from message where (user_id = ? and friend_id = ?) or (user_id = ? and friend_id = ?) ");
 			prst.setInt(1, Integer.valueOf(userId));
 			prst.setInt(2, Integer.valueOf(friendId));
